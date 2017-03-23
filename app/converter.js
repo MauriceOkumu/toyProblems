@@ -51,3 +51,29 @@ exports.mergeSort = function(arr) {
   return stitch(sortedLeft, sortedRight);
 }
 
+exports.asyncMap = function(tasks, callback) {
+  var results = [];
+  var count = 0;
+  for ( var i = 0; i < tasks.length; i++) {
+    (function(i) {
+      tasks[i](function(value) {
+        results[i] = value;
+        count++;
+        if ( count === tasks.length) {
+          callback(results);
+        }
+      })
+    })(i)
+  }
+}
+
+exports.nthFibonacci = function(n) {
+  var fibs = [0, 1];
+  for(;n > 1; n--) {
+    fibs.push(fibs.shift() + fibs[0])
+  }
+  return fibs[n];
+}
+
+
+
