@@ -75,5 +75,69 @@ exports.nthFibonacci = function(n) {
   return fibs[n];
 }
 
+var getIndexBelowMaxForKey = function(str, max) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = (hash << 5) + hash + str.charCodeAt(i);
+    hash = hash & hash; // Convert to 32bit integer
+    hash = Math.abs(hash);
+  }
+  return hash % max;
+};
+
+exports.makeHashTable = function() {
+   var hashTable = {};
+   var result = [];
+   var storageLimit = 1000;
+
+   hashTable.insert = function(key, value) {
+
+    var index = getIndexBelowMaxForKey(key, storageLimit);
+    result[index] = result[index] || [];
+    var pairs = result[index];
+    var pair; 
+    var replaced = false;
+    for( var i = 0; i < pairs.length; i++) {
+      pair = pairs[i];
+      if ( pair[0] === key) {
+        pair[1] = value;
+        replaced = true;
+      }
+    }
+    if(!replaced) {
+      pairs.push([key, value])
+    } 
+   };
+
+   hashTable.retrieve = function(key) {
+    var index = getIndexBelowMaxForKey(key, storageLimit);
+    var pairs = result[index];
+    if (!pairs) { return;} 
+    var pair;
+    for ( var i = 0; i < pairs.length; i++) {
+      pair = pairs[i];
+      if( pair && pair[0] === key) {
+        return pair[1];
+      }
+    }
+   };
+
+   hashTable.remove = function(key) {
+    var index = getIndexBelowMaxForKey(key, storageLimit);
+    var pairs = result[index];
+    var pair;
+
+    for ( var i = 0; i < pairs.length; i++) {
+      pair = pairs[i];
+      if (pair[0] === key) {
+        var value = pair[1];
+        delete pairs[i];
+        return value;
+      }
+    }
+   };
 
 
+
+   return hashTable;
+}
