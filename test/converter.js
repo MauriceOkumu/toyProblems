@@ -387,3 +387,95 @@ describe('hashTable', function() {
     });
   });
 });
+xdescribe('sumArray()', function() {
+ // var sumArray = converter.sumArray;
+  it('should exist', function() {
+    should.exist(converter.sumArray);
+  });
+
+  it('should be a function', function() {
+    converter.sumArray.should.be.a.Function;
+  });
+
+  it('should return a number', function() {
+    var sum = converter.sumArray([1, 2, 3]);
+    should.exist(sum);
+  });
+
+    var sumArray = converter.sumArray;
+  var generateTest = function(arr, seq, sum) {
+    // a clever way to generate multiple tests while still ensuring that
+    // the students will see the contents of the test if they fail the test
+    var test = new Function([
+      '  // the _contiguous_ sub-subsequence with the largest sum of ' + JSON.stringify(arr),
+      '  // is ' + JSON.stringify(seq) + ' and its sum is ' + JSON.stringify(sum),
+      '  sumArray(' + JSON.stringify(arr) + ').should.equal(' + JSON.stringify(sum) + ');'
+    ].join('\n'));
+    it('should return the largest sum of _contiguous_ elements for `' + JSON.stringify(arr) + '`', test);
+  };
+  generateTest([1, 2, 3], [1, 2, 3], 6);
+  generateTest([4, -1, 5], [4, -1, 5], 8);
+  generateTest([10, -11, 11], [11], 11);
+  generateTest([-7, -6, -9], [-6], -6);
+  generateTest([1, 2, 3, -6, 4, 5, 6], [4, 5, 6], 15);
+  generateTest([1, 2, 3, -5, 4, 5, 6], [1, 2, 3, -5, 4, 5, 6], 16);
+  generateTest([1, 2, 3, -4, 5], [1, 2, 3, -4, 5], 7);
+  generateTest([1, 2, 3, -4, 5, -4, 5, -4], [1, 2, 3, -4, 5, -4, 5], 8);
+  generateTest([1, 2, 3, -4, 5, -4, 5, -4, -4], [1, 2, 3, -4, 5, -4, 5], 8);
+  generateTest([1, 2, 3, -4, 5, -4, 5, -4, -4, -1], [1, 2, 3, -4, 5, -4, 5], 8);
+  generateTest([1, 2, 3, -4, 5, -4, 5, -4, -4, 10], [1, 2, 3, -4, 5, -4, 5, -4, -4, 10], 10);
+  generateTest([-5, 2, 3], [2, 3], 5);
+  generateTest([-5, -5, -5, 2, 3], [2, 3], 5);
+  generateTest([-3, -2, -1, -2, -3], [-1], -1);
+  generateTest([99], [99], 99);
+});
+
+describe('rockPaperScissors', function() {
+  it('should be defined', function() {
+    should.exist(converter.rockPaperScissors);
+  });
+  it('should be a function', function() {
+    converter.rockPaperScissors.should.be.a.Function;
+  });
+  it('should return an array', function() {
+    converter.rockPaperScissors().should.be.an.instanceOf(Array);
+  });
+  it('should return an array of arrays', function() {
+    should.exist(converter.rockPaperScissors()[0]);
+    converter.rockPaperScissors()[0].should.be.an.instanceOf(Array);
+  });
+  it('should contain every throw', function() {
+    var expected = [['rock', 'rock', 'rock'], ['rock', 'rock', 'paper'],
+      ['rock', 'rock', 'scissors'], ['rock', 'paper', 'rock'],
+      ['rock', 'paper', 'paper'], ['rock', 'paper', 'scissors'],
+      ['rock', 'scissors', 'rock'], ['rock', 'scissors', 'paper'],
+      ['rock', 'scissors', 'scissors'], ['paper', 'rock', 'rock'],
+      ['paper', 'rock', 'paper'], ['paper', 'rock', 'scissors'],
+      ['paper', 'paper', 'rock'], ['paper', 'paper', 'paper'],
+      ['paper', 'paper', 'scissors'], ['paper', 'scissors', 'rock'],
+      ['paper', 'scissors', 'paper'], ['paper', 'scissors', 'scissors'],
+      ['scissors', 'rock', 'rock'], ['scissors', 'rock', 'paper'],
+      ['scissors', 'rock', 'scissors'], ['scissors', 'paper', 'rock'],
+      ['scissors', 'paper', 'paper'], ['scissors', 'paper', 'scissors'],
+      ['scissors', 'scissors', 'rock'], ['scissors', 'scissors', 'paper'],
+      ['scissors', 'scissors', 'scissors']];
+    var result = converter.rockPaperScissors();
+    result.length.should.equal(expected.length);
+    var expectedHash = {};
+    var resultHash = {};
+    for (var i = 0; i < expected.length; i++) {
+      expectedHash[expected[i].join(':')] = true;
+    }
+    for (i = 0; i < result.length; i++) {
+      resultHash[result[i].join(':')] = true;
+    }
+    var expectedKeys = Object.keys(expectedHash);
+    for (i = 0; i < expectedKeys.length; i++) {
+      resultHash[expectedKeys[i]].should.be.true;
+    }
+    var resultKeys = Object.keys(resultHash);
+    for (i = 0; i < resultKeys.length; i++) {
+      expectedHash[resultKeys[i]].should.be.true;
+    }
+  })
+});

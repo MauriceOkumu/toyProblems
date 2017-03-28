@@ -1,3 +1,4 @@
+//Bubble sort algorithm
 exports.bubbleSort = function(arr) {
 	var swap = function (index1, index2, array) {
 	  var temp = arr[index1];
@@ -29,6 +30,7 @@ exports.bubbleSort = function(arr) {
   return arr;
 }
 
+//Mergesort algorithm
  var stitch = function (left, right) {
    var result = [];
    while(left.length && right.length) {
@@ -51,6 +53,7 @@ exports.mergeSort = function(arr) {
   return stitch(sortedLeft, sortedRight);
 }
 
+//Function to call functions in order of them being passed
 exports.asyncMap = function(tasks, callback) {
   var results = [];
   var count = 0;
@@ -85,6 +88,7 @@ var getIndexBelowMaxForKey = function(str, max) {
   return hash % max;
 };
 
+//Hashtable that handles collisions but not resizing
 exports.makeHashTable = function() {
    var hashTable = {};
    var result = [];
@@ -141,3 +145,41 @@ exports.makeHashTable = function() {
 
    return hashTable;
 }
+
+// Sum of a contiguos array
+exports.sumArray = function (array) {
+  var maxSum = Number.NEGATIVE_INFINITY;
+  var currentSum = 0;
+  for (var i = 0; i < array.length; i++) {
+    currentSum += array[i];
+    if ( maxSum < currentSum) {
+      maxSum = currentSum;
+    }
+    if ( currentSum < 0) {
+      currentSum = 0;
+    }
+  }
+  return maxSum;
+};
+
+exports.rockPaperScissors = function(rounds) {
+  var arrOfPlays = ['rock', 'paper', 'scissors']
+  var rounds = rounds || 3;
+  var combos = [];
+
+  var generateCombos = function(roundsToGo, played) {
+    played = played || [];
+    if (roundsToGo === 0) {
+      combos.push(played);
+      return;
+    }
+    for( var i = 0; i < arrOfPlays.length; i++) {
+      var curr = arrOfPlays[i];
+      generateCombos(roundsToGo - 1, played.concat(curr));
+    }
+  }
+    generateCombos(rounds);
+
+
+  return combos;
+};
